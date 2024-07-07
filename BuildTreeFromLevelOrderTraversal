@@ -1,0 +1,32 @@
+void BuildTreeFromLevelOrderTraversal(Node* &root){
+    queue<Node*> q;
+    cout<<"Enter root"<<endl;
+    int data;
+    cin>>data;
+    root= new Node(data);
+    
+    q.push(root);
+    while(!q.empty()){
+        Node* temp=q.front();
+        q.pop();
+        
+        cout<<"enter data to the left of "<<temp->data<<endl;
+        int x;
+        cin>>x;
+        if(x!=-1){
+            Node* temp1=new Node(x);
+            temp->left=temp1;
+            q.push(temp1);
+        }
+        cout<<"enter data to the right of "<<temp->data<<endl;
+        int y;
+        cin>>y;
+        if(y!=-1){
+            Node* temp2=new Node(y);
+            temp->right=temp2;
+            q.push(temp2);
+        }
+        
+    }
+    
+}
