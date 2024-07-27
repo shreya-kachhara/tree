@@ -1,0 +1,104 @@
+//{ Driver Code Starts
+//
+
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+	int data;
+	struct Node *left;
+	struct Node *right;
+	
+	Node(int x){
+	    data = x;
+	    left = NULL;
+	    right = NULL;
+	}
+};
+
+
+void printPostOrder(Node *root)
+{
+	if(root==NULL)
+		return;
+	printPostOrder(root->left);
+	printPostOrder(root->right);
+	cout<<root->data<<" ";
+}
+
+// } Driver Code Ends
+
+/*Complete the code here.
+Node is as follows:
+struct Node
+{
+  int data;
+  Node* left;
+  Node* right;
+};
+*/
+class Solution{
+    // void mapping(int in[], map<int, int> &intToIndex, int n){
+    //     for(int i=0; i<n; i++){
+    //         intToIndex[in[i]]=i;
+    //     }
+    // }
+    int findPosition(int in[], int element, int inStartIndex, int inEndIndex ){
+        for(int i=inStartIndex; i<=inEndIndex; i++){
+            if(element== in[i]){
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    Node* solve(int in[], int pre[], int n, int &PreIndex, int inStartIndex, int inEndIndex){
+        
+        if(PreIndex>=n || inStartIndex>inEndIndex){
+            return NULL;
+        }
+        Node* root=new Node(pre[PreIndex]);
+        
+        // int positionInInorder = intToIndex[pre[PreIndex]];
+        int positionInInorder=findPosition(in, pre[PreIndex], inStartIndex, inEndIndex);
+        PreIndex++;
+        root->left=solve(in, pre, n, PreIndex, inStartIndex, positionInInorder-1);
+        root->right=solve(in, pre, n, PreIndex, positionInInorder+1, inEndIndex);
+        
+        return root;
+    }
+    public:
+    Node* buildTree(int in[],int pre[], int n)
+    {
+        int PreIndex=0;
+        // map<int, int> intToIndex;
+        // mapping(in, intToIndex, n);
+        
+        return solve(in, pre, n, PreIndex, 0, n-1);
+    }
+};
+
+//{ Driver Code Starts.
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int n;
+		cin>>n;
+		
+		int inorder[n], preorder[n];
+		for(int i=0; i<n; i++)
+			cin>> inorder[i];
+		for(int i=0; i<n; i++)
+			cin>> preorder[i];
+		Solution obj;
+		Node *root = obj.buildTree(inorder, preorder, n);
+		printPostOrder(root);
+		cout<< endl;
+	}
+}
+
+// } Driver Code Ends
